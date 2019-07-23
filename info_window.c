@@ -113,8 +113,9 @@ static gint prevbutton_callback (GtkWidget *wi, gpointer *data)
 {
   if (current_site.nr > 0)
     {
-      gtk_clist_select_row (GTK_CLIST(clist), current_site.nr - 1, 1);
-      gtk_clist_moveto (GTK_CLIST(clist), current_site.nr - 1, 1, 0.5, 0.5);
+      printf("prev\n");
+      // gtk_clist_select_row (GTK_CLIST(clist), current_site.nr - 1, 1);
+      // gtk_clist_moveto (GTK_CLIST(clist), current_site.nr - 1, 1, 0.5, 0.5);
     }
   return TRUE;
 }
@@ -123,8 +124,9 @@ static gint nextbutton_callback (GtkWidget *wi, gpointer *data)
 {
   if (sites[current_site.nr+1].draw)
     {
-      gtk_clist_select_row (GTK_CLIST(clist), current_site.nr + 1, 1);
-      gtk_clist_moveto (GTK_CLIST(clist), current_site.nr + 1, 1, 0.5, 0.5);
+      printf("next\n");
+      // gtk_clist_select_row (GTK_CLIST(clist), current_site.nr + 1, 1);
+      // gtk_clist_moveto (GTK_CLIST(clist), current_site.nr + 1, 1, 0.5, 0.5);
     }
   return TRUE;
 }

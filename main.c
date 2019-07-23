@@ -394,11 +394,11 @@ mouse_button_down(GtkWidget *wi, GdkEventButton *ev)
       site = which_site(x, y);
       if(site != -1)
 	{
-	  gtk_clist_select_row(GTK_CLIST(clist), site, 1);
+	  // gtk_clist_select_row(GTK_CLIST(clist), site, 1);
 
 	  /* Scroll the list here to make sure the listitem
 	     is visible in the window. */	  
-	  gtk_clist_moveto(GTK_CLIST(clist),site, 1, 0.5, 0.5);
+	  // gtk_clist_moveto(GTK_CLIST(clist),site, 1, 0.5, 0.5);
 	  break;
 	}
       /* He wasn't, he's trying to rotate the earth. */
@@ -971,7 +971,7 @@ combo_entry_callback(GtkWidget *entry, gpointer *combo)
 	sites[i].extpipe_data_counter = 0;
       }
     /* Clear the whole list. */
-    gtk_clist_clear(GTK_CLIST(clist));
+    // gtk_clist_clear(GTK_CLIST(clist));
     makeearth();
     calltrace();
     return TRUE;
@@ -1107,6 +1107,8 @@ main(int argc, char **argv)
     N_("Hostname"),
     N_("IP number")
   };
+
+  enum { COL_NR, COL_HOSTNAME, COL_IP, NUM_COLS };
   static int translated;
 
 #ifdef ENABLE_NLS
@@ -1357,19 +1359,38 @@ main(int argc, char **argv)
         translated = 1;
   }
 
-  /* This causes a warning, because GTK is broken. */
-  clist = gtk_clist_new_with_titles(3, titles);
+  //GtkListStore *store = gtk_list_store_new(NUM_COLS, G_TYPE_STRING, G_TYYPE_STRING, G_TYPE_STRING);
+  clist = gtk_tree_view_new();
+  gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW (clist),
+                                              -1,      
+                                             titles[0],
+                                             gtk_cell_renderer_text_new(),
+                                             "text", COL_NR,
+                                             NULL);
+  gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW (clist),
+                                              -1,      
+                                             titles[1],
+                                             gtk_cell_renderer_text_new(),
+                                             "text", COL_HOSTNAME,
+                                             NULL);
+  gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW (clist),
+                                              -1,      
+                                             titles[2],
+                                             gtk_cell_renderer_text_new(),
+                                             "text", COL_IP,
+                                             NULL);
 
-  gtk_clist_set_selection_mode((GtkCList *)clist, GTK_SELECTION_BROWSE);
+	GtkTreeSelection * selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (clist));
+	gtk_tree_selection_set_mode(selection, GTK_SELECTION_BROWSE);
   
   /* FIXME: These should probably be font-dependent. */
   
-  gtk_clist_set_column_width (GTK_CLIST(clist), 0, 20);
-  gtk_clist_set_column_width (GTK_CLIST(clist), 1, 230);
-  gtk_clist_set_column_width (GTK_CLIST(clist), 2, 100);
+  // gtk_clist_set_column_width (GTK_CLIST(clist), 0, 20);
+  // gtk_clist_set_column_width (GTK_CLIST(clist), 1, 230);
+  // gtk_clist_set_column_width (GTK_CLIST(clist), 2, 100);
   
-  gtk_signal_connect(GTK_OBJECT(clist), "select_row",
-		     GTK_SIGNAL_FUNC(clist_item_selected), NULL);
+  // gtk_signal_connect(GTK_OBJECT(clist), "select_row",
+	// 	     GTK_SIGNAL_FUNC(clist_item_selected), NULL);
  
   gtk_signal_connect (GTK_OBJECT (window), "destroy",
 		      GTK_SIGNAL_FUNC(exit_program), NULL);
