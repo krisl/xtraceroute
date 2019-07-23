@@ -133,7 +133,7 @@ AC_SUBST(hostbinary)
 
 dnl Checks for libraries.
 
-AM_PATH_GTK(1.0.0,
+AM_PATH_GTK_2_0(2.0.0,
 		[LIBS="$LIBS $GTK_LIBS" CFLAGS="$CFLAGS $GTK_CFLAGS"],
 		AC_MSG_ERROR([Cannot find proper gtk version]))
 
