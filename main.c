@@ -151,12 +151,16 @@ which_site(GLint x, GLint y)
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
   glLoadIdentity();
-  gluPickMatrix(x, glarea->allocation.height - y, 1, 1, vp);
+
+  GtkAllocation *allocation = g_new0 (GtkAllocation, 1);
+  gtk_widget_get_allocation(GTK_WIDGET(glarea), allocation);
+
+  gluPickMatrix(x, allocation->height - y, 1, 1, vp);
 
   // Note: This code is common to some in reshape. Maybe look into that.
 
-  aspect = (float)glarea->allocation.width / (float)glarea->allocation.height;
-  if(glarea->allocation.width > glarea->allocation.height)
+  aspect = (float)allocation->width / (float)allocation->height;
+  if(allocation->width > allocation->height)
     {
       /* It's wide. */
       gluPerspective( 40.0,    /* Field of view, in "y" direction. */
@@ -172,6 +176,8 @@ which_site(GLint x, GLint y)
                       1.0,          /* Z near       */
                       10.0);        /* Z far        */
     } 
+
+  g_free (allocation);
   
   glMatrixMode(GL_MODELVIEW);
     
@@ -243,8 +249,12 @@ reshape(GtkWidget *wi, gpointer data)
       return;
     }
 
-  w      = wi->allocation.width;
-  h      = wi->allocation.height;
+  GtkAllocation *allocation = g_new0 (GtkAllocation, 1);
+  gtk_widget_get_allocation(GTK_WIDGET(wi), allocation);
+
+  w      = allocation->width;
+  h      = allocation->height;
+  g_free (allocation);
   aspect = (float)w / (float)h;
 
   glViewport(0, 0, w, h);
@@ -297,8 +307,11 @@ mouse_motion(GtkWidget *wi, GdkEventMotion *ev)
   GdkModifierType mods;
   gdk_window_get_pointer (wi->window, &x, &y, &mods);
 
-  w = glarea->allocation.width;
-  h = glarea->allocation.height;
+  GtkAllocation *allocation = g_new0 (GtkAllocation, 1);
+  gtk_widget_get_allocation(GTK_WIDGET(wi), allocation);
+  w      = allocation->width;
+  h      = allocation->height;
+  g_free (allocation);
 
   // Begin zoom stuff, sort this out later.
   //  if (zoom_track_tag && (zbegin > -1) )
