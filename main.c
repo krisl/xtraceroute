@@ -305,7 +305,7 @@ mouse_motion(GtkWidget *wi, GdkEventMotion *ev)
   gint x, y, w, h;
   gfloat strafex,strafey;
   GdkModifierType mods;
-  gdk_window_get_pointer (wi->window, &x, &y, &mods);
+  gdk_window_get_pointer (gtk_widget_get_window(wi), &x, &y, &mods);
 
   GtkAllocation *allocation = g_new0 (GtkAllocation, 1);
   gtk_widget_get_allocation(GTK_WIDGET(wi), allocation);
