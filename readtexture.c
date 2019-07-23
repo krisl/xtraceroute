@@ -32,12 +32,14 @@ GdkPixbuf *
 readTexture(const char *imgname)
 {
   GdkPixbuf *img;
+  GError *error;
 
   DPRINTF("Loading texture from file \"%s\"... ", imgname);
 
-  img = gdk_pixbuf_new_from_file(imgname);
+  img = gdk_pixbuf_new_from_file(imgname, &error);
   if (img == NULL) 
     {
+      // TODO use error here
       fprintf(stderr, "Couldn't load texture file %s\n", imgname);
       exit(EXIT_FAILURE);
     }
