@@ -747,80 +747,115 @@ build_menu( GtkWidget *window, GtkWidget **menubar )
   /* strings are marked with a preceding N_() for translation purpose
      see gettext()
   */
-const GtkItemFactoryEntry menu_items[] = {
-  { N_("/_File"),                    NULL,           NULL,                0, "<Branch>" },
-  //  { N_("/File/_New..."),             "<control>O",   (GtkItemFactoryCallback)new_trace,   0, NULL },
-  { "/File/sep1",                    NULL,           NULL,                0, "<Separator>" },
-  { N_("/File/_Quit"),               "<control>Q",   exit_program,        0, NULL },
+static const gchar *menu_xml =
+  "<ui>"
+  "  <menubar name='MainMenu'>"
+  "    <menu name='FileMenu' action='FileMenuAction'>"
+  "      <menuitem name='Quit' action='QuitAction' />"
+  "    </menu>"
+  "    <menu name='PreferenceMenu' action='PreferenceMenuAction'>"
+  "      <menu name='LightingMenu' action='LightingMenuAction'>"
+  "        <menuitem name='DayAndNight' action='DayAndNightAction' />"
+  "        <menuitem name='DayOnly' action='DayOnlyAction' />"
+  "      </menu>"
+  "    </menu>"
+  "    <menu name='DatabaseMenu' action='DatabaseMenuAction'>"
+  "      <menuitem name='AddHost' action='AddHostAction' />"
+  "      <menuitem name='AddNet' action='AddNetAction' />"
+  "      <menuitem name='AddKeyword' action='AddKeywordAction' />"
+  "    </menu>"
+  "    <menu name='ViewMenu' action='ViewMenuAction'>"
+  "      <menuitem name='ZoomIn' action='ZoomInAction' />"
+  "      <menuitem name='ZoomOut' action='ZoomOutAction' />"
+  "      <menuitem name='ZoomInX2' action='ZoomInX2Action' />"
+  "      <menuitem name='ZoomOutX2' action='ZoomOutX2Action' />"
+  "      <menuitem name='RestoreDefault' action='RestoreDefaultAction' />"
+  "    </menu>"
+  "    <menu name='TransparencyMenu' action='TransparencyMenuAction'>"
+  "      <menuitem name='TransparencyOff' action='TransparencyOffAction' />"
+  "      <menuitem name='TransparencyOn' action='TransparencyOnAction' />"
+  "    </menu>"
+  "    <menu name='HelpMenu' action='HelpMenuAction'>"
+  "      <menuitem name='About' action='AboutAction' />"
+  "    </menu>"
+  "  </menubar>"
+  "</ui>";
 
-  { N_("/_Preferences"),             NULL,           NULL,               0, "<Branch>" },
-  { N_("/Preferences/_Lighting"),    NULL,           NULL,               0, "<Branch>" },
-  { N_("/Preferences/Lighting/Day and _night"),NULL, set_lighting_mode,  DAY_AND_NIGHT, "<RadioItem>" },
-  { N_("/Preferences/Lighting/_Day only"), NULL,     set_lighting_mode,  DAY_ONLY,      "/Preferences/Lighting/Day and night" },
-  
-  { N_("/_Database"),                NULL,           NULL,                0, "<Branch>" },
-  { N_("/Database/Add host..."),     NULL,           addHost,             0, NULL },
-  { N_("/Database/Add net..."),      NULL,           addNet,              0, NULL },
-  { N_("/Database/Add keyword..."),  NULL,           addGen,              0, NULL },
-
-  /*        
-  { N_("/_Map"),                     NULL,           NULL,                0, "<Branch>" },
-  { N_("/Map/Map one"),              NULL,           choose_map,          0, NULL },
-  { N_("/Map/Map two"),              NULL,           choose_map,          1, NULL },
-  { N_("/Map/Map three"),            NULL,           choose_map,          2, NULL },
-  */
-  { N_("/_View"),                    NULL,           NULL,                0, "<Branch>" },
-  { N_("/View/Zoom _In"),            "<control>i",   choose_zoom,         0, NULL },
-  { N_("/View/Zoom _Out"),           "<control>o",   choose_zoom,         1, NULL },
-  { N_("/View/Zoom In x2"),          NULL,           choose_zoom,         2, NULL },
-  { N_("/View/Zoom Out x2"),         NULL,           choose_zoom,         3, NULL },
-  { N_("/View/Restore default"),     NULL,           choose_zoom,         4, NULL },
-  
-  { N_("/_Transparency"),            NULL,           NULL,                0, "<Branch>" },
-  { N_("/Transparency/Off"),         NULL,           choose_transparency, 0, NULL },
-  { N_("/Transparency/On"),          NULL,           choose_transparency, 1, NULL },
-
-  { N_("/_Help"),                    NULL,           NULL,                0, "<LastBranch>" },
-  { N_("/_Help/About"),              NULL,           about_program,       0, NULL },
+// ("name", "stock_id", "label", "accelerator", "tooltip", "value")
+static const GtkActionEntry menu_items[] = {
+  { "FileMenuAction",         NULL,           N_("_File") },
+  { "QuitAction",             GTK_STOCK_QUIT, N_("_Quit"),           "<control>Q", N_("Quit"),          G_CALLBACK(exit_program) },
+  { "PreferenceMenuAction",   NULL,           N_("_Preferences") },
+  { "LightingMenuAction",     NULL,           N_("_Lighting") },
+  { "DayAndNightAction",      NULL,           N_("Day and _night"),  NULL,         N_("Day and night"), G_CALLBACK(set_lighting_mode) /*,true*/},
+  { "DayOnlyAction",          NULL,           N_("_Day only"),       NULL,         N_("Day only"),      G_CALLBACK(set_lighting_mode) /*,false*/},
+  { "DatabaseMenuAction",     NULL,           N_("_Database") },
+  { "AddHostAction",          NULL,           N_("Add host"),        NULL,         N_("Add host"),      G_CALLBACK(addHost) },
+  { "AddNetAction",           NULL,           N_("Add net"),         NULL,         N_("Add net"),       G_CALLBACK(addNet) },
+  { "AddKeywordAction",       NULL,           N_("Add keyword"),     NULL,         N_("Add keyword"),   G_CALLBACK(addGen) },
+  { "ViewMenuAction",         NULL,           N_("_View") },
+  { "ZoomInAction",           NULL,           N_("Zoom _In"),        NULL,         NULL,                G_CALLBACK(choose_zoom) }, // 0
+  { "ZoomOutAction",          NULL,           N_("Zoom _Out"),       NULL,         NULL,                G_CALLBACK(choose_zoom) }, // 1
+  { "ZoomInX2Action",         NULL,           N_("Zoom In x2"),      NULL,         NULL,                G_CALLBACK(choose_zoom) }, // 2
+  { "ZoomOutX2Action",        NULL,           N_("Zoom Out x2"),     NULL,         NULL,                G_CALLBACK(choose_zoom) }, // 3
+  { "RestoreDefaultAction",   NULL,           N_("Restore default"), NULL,         NULL,                G_CALLBACK(choose_zoom) }, // 4
+  { "TransparencyMenuAction", NULL,           N_("_Transparency") },
+  { "TransparencyOffAction",  NULL,           N_("Off"),             NULL,         NULL,                G_CALLBACK(choose_transparency) }, // 0
+  { "TransparencyOnAction",   NULL,           N_("On"),              NULL,         NULL,                G_CALLBACK(choose_transparency) }, // 1
+  { "HelpMenuAction",         NULL,           N_("_Help") },
+  { "AboutAction",            NULL,           N_("About"),           NULL,         NULL,                G_CALLBACK(about_program) },
 };
 
-  gint nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
+// static const GtkActionEntry toggle_action_entries[] = {
+//   { "DayAndNightAction",    NULL,           N_("Day and _night"), NULL,          N_("Day and night"), G_CALLBACK(set_lighting_mode), true },
+//   { "DayOnlyAction",        NULL,           N_("_Day only"),      NULL,          N_("Day only"),      G_CALLBACK(set_lighting_mode), false },
+// };
+
+  static guint nmenu_items = G_N_ELEMENTS (menu_items);
   
-  GtkAccelGroup *accel_group = gtk_accel_group_new ();
-  GtkItemFactory *item_factory = gtk_item_factory_new (GTK_TYPE_MENU_BAR, 
-						       "<main>", accel_group);
-  gtk_item_factory_create_items (item_factory,
-				 nmenu_items, menu_items, NULL);
+  GtkActionGroup *action_group = gtk_action_group_new ("AppActions");
+  gtk_action_group_add_actions (action_group, menu_items, nmenu_items, NULL);
+  GtkUIManager *menu_manager = gtk_ui_manager_new ();
+  gtk_ui_manager_insert_action_group (menu_manager, action_group, 0);
+
+  GError *error;
+  if (!gtk_ui_manager_add_ui_from_string(menu_manager, menu_xml, -1, &error)) {
+    g_message("Failed to build menus: %s\n", error->message);
+    g_error_free(error);
+    error = NULL;
+  }
+
+  GtkAccelGroup *accel_group = gtk_ui_manager_get_accel_group (menu_manager);
 
   /* Set the preferences */
  
-  switch(user_settings->lighting_mode)
-    {
-    case DAY_AND_NIGHT:
-      gtk_check_menu_item_set_active(
-          GTK_CHECK_MENU_ITEM (
-              gtk_item_factory_get_item (item_factory,
-					 "/Preferences/Lighting/Day and night")),
-	  TRUE);
-      break;
-    case DAY_ONLY:
-      gtk_check_menu_item_set_active(
-	  GTK_CHECK_MENU_ITEM(
-	      gtk_item_factory_get_item (item_factory,
-					 "/Preferences/Lighting/Day only")),
-	  TRUE);
-      break;
-    default:
-      printf("Funky lighting mode making menu: %d\n", 
-	user_settings->lighting_mode);
-      exit(EXIT_FAILURE);
-    }
+  // switch(user_settings->lighting_mode)
+  //   {
+  //   case DAY_AND_NIGHT:
+  //     gtk_check_menu_item_set_active(
+  //         GTK_CHECK_MENU_ITEM (
+  //             gtk_item_factory_get_item (item_factory,
+	// 				 "/Preferences/Lighting/Day and night")),
+	//   TRUE);
+  //     break;
+  //   case DAY_ONLY:
+  //     gtk_check_menu_item_set_active(
+	//   GTK_CHECK_MENU_ITEM(
+	//       gtk_item_factory_get_item (item_factory,
+	// 				 "/Preferences/Lighting/Day only")),
+	//   TRUE);
+  //     break;
+  //   default:
+  //     printf("Funky lighting mode making menu: %d\n", 
+	// user_settings->lighting_mode);
+  //     exit(EXIT_FAILURE);
+  //   }
 
   /* Attach the new accelerator group to the window. */
   gtk_window_add_accel_group (GTK_WINDOW (window), accel_group);
   
   if (menubar)
-    *menubar = gtk_item_factory_get_widget (item_factory, "<main>");
+    *menubar = gtk_ui_manager_get_widget (menu_manager, "/MainMenu");
 }
 
 /**
