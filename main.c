@@ -118,7 +118,7 @@ redraw(GtkWidget *wi, GdkEvent *gdk_event)
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glCallList(WORLD);
   
-  gtk_gl_area_swapbuffers(GTK_GL_AREA(wi));
+  gtk_gl_area_attach_buffers(GTK_GL_AREA(wi));
 }
 
 /** 
@@ -276,7 +276,7 @@ reshape(GtkWidget *wi, gpointer data)
   glPushMatrix();
   glMatrixMode(GL_MODELVIEW);
   glGetIntegerv(GL_VIEWPORT, vp);
-  gtk_gl_area_swapbuffers(GTK_GL_AREA(wi));
+  gtk_gl_area_attach_buffers(GTK_GL_AREA(wi));
 }
 
 

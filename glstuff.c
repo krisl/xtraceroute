@@ -565,7 +565,7 @@ init_gl(GtkWidget *wi, gpointer data)
 #endif //UGLY_LINES
   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-  gtk_gl_area_swapbuffers(GTK_GL_AREA(wi));
+  gtk_gl_area_attach_buffers(GTK_GL_AREA(wi));
 }
 
 /**
