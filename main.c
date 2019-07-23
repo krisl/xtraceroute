@@ -232,7 +232,7 @@ reshape(GtkWidget *wi, gpointer data)
   gint w, h;
   GLdouble aspect;
 
-  if(!GTK_WIDGET_REALIZED (wi))
+  if(!gtk_widget_get_realized(wi))
     {
       gtk_widget_queue_resize(wi);
       return;
@@ -644,7 +644,7 @@ void set_lighting_mode(gpointer data, guint action, GtkWidget *w)
   // This is neccessary because the callback gets called when I 
   // set the defaults.
   
-  if(! GTK_WIDGET_REALIZED(w))
+  if(!gtk_widget_get_realized(w))
     {
       return;
     }
