@@ -1099,9 +1099,7 @@ main(int argc, char **argv)
   GtkWidget *combo_hbox;
   GtkWidget *combo_label;
   GtkWidget *combo;
-#ifdef GTK_HAVE_FEATURES_1_1_5
   GtkWidget *dummyscrwin;
-#endif
   
   const char *titles[] =
   {
@@ -1422,7 +1420,6 @@ main(int argc, char **argv)
 
   gtk_container_border_width(GTK_CONTAINER(vbox2), 5);
 
-#ifdef GTK_HAVE_FEATURES_1_1_5
 
   dummyscrwin = gtk_scrolled_window_new(NULL, NULL);
   gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(dummyscrwin),
@@ -1431,12 +1428,6 @@ main(int argc, char **argv)
   gtk_widget_show(dummyscrwin);
   gtk_container_add(GTK_CONTAINER(dummyscrwin), clist);
   gtk_box_pack_start(GTK_BOX(hbox), dummyscrwin, TRUE, TRUE, 0);
-#else   // GTK+ 1.0.x
-  gtk_clist_set_policy (GTK_CLIST(clist),
-			GTK_POLICY_AUTOMATIC,
-			GTK_POLICY_AUTOMATIC);
-  gtk_box_pack_start(GTK_BOX(hbox), clist, TRUE, TRUE, 0);
-#endif
   
   gtk_box_pack_start(GTK_BOX(hbox), vbox2,   FALSE, TRUE, 0);
   
