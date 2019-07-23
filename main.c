@@ -409,7 +409,7 @@ mouse_button_down(GtkWidget *wi, GdkEventButton *ev)
       ybegin = y;
       /*vafan ? FIXME*/          zbegin = -1;
       if(rotation_track_tag == 0)  /* To prevent duplicate callbacks. */
-	rotation_track_tag = gtk_idle_add((GtkFunction)mouse_motion, wi);
+	rotation_track_tag = g_idle_add(G_SOURCE_FUNC(mouse_motion), wi);
       
       break;
     case 2: /* Middle button, translation */
@@ -418,7 +418,7 @@ mouse_button_down(GtkWidget *wi, GdkEventButton *ev)
       xbeginstrafe = x;
       ybeginstrafe = y;
       if(translation_track_tag == 0)  /* To prevent duplicate callbacks. */
-	translation_track_tag = gtk_idle_add((GtkFunction)mouse_motion, wi);
+	translation_track_tag = g_idle_add(G_SOURCE_FUNC(mouse_motion), wi);
       break; 
 
      case 3: /* Right button, zoom */
@@ -426,7 +426,7 @@ mouse_button_down(GtkWidget *wi, GdkEventButton *ev)
        
        zbegin = y;
        if(zoom_track_tag == 0)  /* To prevent duplicate callbacks. */
-	 zoom_track_tag = gtk_idle_add((GtkFunction)mouse_motion, wi);
+	 zoom_track_tag = g_idle_add(G_SOURCE_FUNC(mouse_motion), wi);
        break;
     }
   return TRUE;
@@ -442,21 +442,21 @@ mouse_button_up(GtkWidget *wi, GdkEventButton *ev)
 {
   if(ev->button == 1 && rotation_track_tag != 0) 
     { 
-      gtk_idle_remove(rotation_track_tag);
+      g_idle_remove_by_data(wi);
       rotation_track_tag = 0;
       //      printf("Mouse 1 up!\n");
     }
 
  if(ev->button == 2 && translation_track_tag != 0) 
     { 
-      gtk_idle_remove(translation_track_tag);
+      g_idle_remove_by_data(wi);
       translation_track_tag = 0;
       //      printf("Mouse 2 up!\n");
     }
 
  if(ev->button == 3 && zoom_track_tag != 0) 
     { 
-      gtk_idle_remove(zoom_track_tag);
+      g_idle_remove_by_data(wi);
       zoom_track_tag = 0;
       //      printf("Mouse 3 up!\n");
     }
