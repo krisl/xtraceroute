@@ -21,7 +21,7 @@
 #include "xt.h"
 #include <GL/glx.h>
 #include <GL/glu.h>
-#include <gtkgl/gtkglarea.h>
+#include <gtk/gtk.h>
 #include <sys/stat.h>
 #include <string.h>
 #include <netdb.h>
