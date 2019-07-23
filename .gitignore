@@ -44,4 +44,3 @@ m4/lt~obsolete.m4
 
 # exceptions
 !intl/Makefile.in
-!share/Makefile.in # why?
