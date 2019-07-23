@@ -108,8 +108,7 @@ recalcModelView(void)
 void 
 redraw(GtkWidget *wi, GdkEvent *gdk_event)
 {
-  if (!gtk_gl_area_make_current(GTK_GL_AREA(wi)))
-    printf("make_current failed in redraw()\n");
+  gtk_gl_area_make_current(GTK_GL_AREA(wi));
   
   if (newModel)
     {
@@ -140,8 +139,7 @@ which_site(GLint x, GLint y)
   GLint hits = 0;
   GLdouble aspect;
 
-  if (!gtk_gl_area_make_current(GTK_GL_AREA(glarea)))
-      printf("make_current failed early in which_site()\n");
+  gtk_gl_area_make_current(GTK_GL_AREA(glarea));
 
   //printf("which_site?\n");
   glSelectBuffer(MAXSELECT, (GLuint *) &selectBuf);
@@ -243,11 +241,7 @@ reshape(GtkWidget *wi, gpointer data)
       gtk_widget_queue_resize(wi);
       return;
     }
-  if (!gtk_gl_area_make_current(GTK_GL_AREA(wi)))
-    {
-      printf("make_current failed in reshape()\n");
-      return;
-    }
+  gtk_gl_area_make_current(GTK_GL_AREA(wi));
 
   GtkAllocation *allocation = g_new0 (GtkAllocation, 1);
   gtk_widget_get_allocation(GTK_WIDGET(wi), allocation);

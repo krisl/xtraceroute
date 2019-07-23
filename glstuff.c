@@ -496,10 +496,7 @@ void
 init_gl(GtkWidget *wi, gpointer data)
 {
   
-  if (!gtk_gl_area_make_current(GTK_GL_AREA(wi)))
-    { 
-      printf("make_current failed early in init_gl()\n");
-    }
+  gtk_gl_area_make_current(GTK_GL_AREA(wi));
 
   lineobj  = gluNewQuadric();
   earthobj = gluNewQuadric();
@@ -608,8 +605,7 @@ void makeearth(void)
   // glxmakecurrent isn't allowed in select or feedback modes.
   if (render_mode == NORMAL_MODE)
     {
-      if (!gtk_gl_area_make_current(GTK_GL_AREA(glarea)))
-	printf("make_current failed early in makeearth()\n");
+      gtk_gl_area_make_current(GTK_GL_AREA(glarea));
     }
   glNewList(WORLD, GL_COMPILE);
   glPushMatrix();
