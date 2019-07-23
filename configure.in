@@ -179,6 +179,8 @@ AC_C_CONST
 
 dnl Checks for library functions.
 
+LIBS="$LIBS -lm"
+
 AC_OUTPUT([
 intl/Makefile
 po/Makefile.in
