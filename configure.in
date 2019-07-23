@@ -144,17 +144,25 @@ dnl 		[LIBS="$LIBS $GDK_IMLIB_LIBS"
 dnl 			CFLAGS="$CFLAGS $GDK_IMLIB_CFLAGS"],
 dnl 		AC_MSG_ERROR([Cannot find proper imlib version]))
 
-dnl Look for gdk-pixbuf
+#dnl Look for gdk-pixbuf
+#
+#AM_PATH_GDK_PIXBUF(0.8.0,
+#		[LIBS="$LIBS $GDK_PIXBUF_LIBS"
+#                        CFLAGS="$CFLAGS $GDK_PIXBUF_CFLAGS"],
+#                AC_MSG_ERROR([Cannot find proper gdk_pixbuf version]))
+#
+#dnl Look for gtkglarea
+#
+#AM_PATH_GTKGL([LIBS="$LIBS $GTKGL_LIBS" CFLAGS="$CFLAGS $GTKGL_CFLAGS"],
+#		 AC_MSG_ERROR([Cannot find proper gtkgl version]))
 
-AM_PATH_GDK_PIXBUF(0.8.0,
-		[LIBS="$LIBS $GDK_PIXBUF_LIBS"
-                        CFLAGS="$CFLAGS $GDK_PIXBUF_CFLAGS"],
-                AC_MSG_ERROR([Cannot find proper gdk_pixbuf version]))
+AC_CHECK_LIB(gtkgl-2.0, gtk_gl_area_new, [], [
+ echo "you need gtkgl version"
+ exit -1
+])
 
-dnl Look for gtkglarea
-
-AM_PATH_GTKGL([LIBS="$LIBS $GTKGL_LIBS" CFLAGS="$CFLAGS $GTKGL_CFLAGS"],
-		 AC_MSG_ERROR([Cannot find proper gtkgl version]))
+LIBS="$LIBS `pkg-config --libs gtkgl-2.0`"
+CFLAGS="$CFLAGS `pkg-config --cflags gtkgl-2.0`"
 
 dnl AC_CHECK_LIB(tiff, TIFFOpen, have_libtiff=yes)
 dnl if test "x$have_libtiff" = "x" ; then
