@@ -43,7 +43,7 @@ void tell_user(const char *mess)
     gtk_container_border_width(GTK_CONTAINER(dialog), 10);
     
     label  = gtk_label_new(mess);
-    gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), label, TRUE,
+    gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), label, TRUE,
 	    TRUE, 0);
     gtk_widget_show(label);
     
@@ -51,9 +51,9 @@ void tell_user(const char *mess)
     button = gtk_button_new_with_label(_("OK"));
     gtk_signal_connect(GTK_OBJECT (button), "clicked",
 	    GTK_SIGNAL_FUNC (destroy_widget_callback), dialog);
-    gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->action_area), button,
+    gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(dialog))), button,
 	    TRUE, TRUE, 0);
-    GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+    gtk_widget_set_can_default(button, TRUE);
     gtk_widget_grab_default(button);
     gtk_widget_show(button);
     

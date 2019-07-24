@@ -184,32 +184,32 @@ void addNet(GtkWidget* wi)
   gtk_container_add(GTK_CONTAINER(frame), table);
   gtk_widget_show(GTK_WIDGET(frame));
 
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), title, TRUE,
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), title, TRUE,
 		     TRUE, 0);
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->vbox), frame, TRUE,
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), frame, TRUE,
 		     TRUE, 0);
   
   
   yesbutton = gtk_button_new_with_label(_("OK"));
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->action_area), yesbutton,
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(dialog))), yesbutton,
 		     TRUE, TRUE, 0);
   gtk_signal_connect(GTK_OBJECT (yesbutton), "clicked",
 		     GTK_SIGNAL_FUNC (yesbutton_callback), dialog);
   gtk_signal_connect(GTK_OBJECT (yesbutton), "clicked",
 		     GTK_SIGNAL_FUNC (destroy_widget_callback), dialog);
-  GTK_WIDGET_SET_FLAGS(yesbutton, GTK_CAN_DEFAULT);
+  gtk_widget_set_can_default(yesbutton, TRUE);
   gtk_widget_grab_default(yesbutton);
   gtk_widget_show(yesbutton);
 
   nobutton = gtk_button_new_with_label(_("Cancel"));
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->action_area), nobutton,
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(dialog))), nobutton,
 		     TRUE, TRUE, 0);
   gtk_signal_connect(GTK_OBJECT (nobutton), "clicked",
 		      GTK_SIGNAL_FUNC(destroy_widget_callback), dialog);
   gtk_widget_show(nobutton);
 
   helpbutton = gtk_button_new_with_label(_("Help"));
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->action_area), helpbutton,
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(dialog))), helpbutton,
 		     TRUE, TRUE, 0);
   gtk_signal_connect(GTK_OBJECT (helpbutton), "clicked",
 		      GTK_SIGNAL_FUNC(helpbutton_callback), dialog);
