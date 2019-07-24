@@ -296,13 +296,8 @@ writeGenDB(database *db, const char *filename)
       char *lat = locNumToStr(entry->lat, LATITUDE);
       char *lon = locNumToStr(entry->lon, LONGITUDE);
       /*      int tabs = (15-strlen(entry->name))/8; */
-      int loclen;
       
-      loclen = fprintf(fh, "%s %s", lat, lon);
-      
-      /*      tabs = (31-loclen)/8;
-      while(tabs-- >= 0)
-      */
+      fprintf(fh, "%s %s", lat, lon);
       putc('\t', fh);
 
       fprintf(fh, "%s", entry->name);
@@ -431,7 +426,9 @@ readHostDB(const char *dbfile)
  
       /* Get the IP-address and name */
 
-      fscanf(fp, "%s %s", entry->ip, entry->name);
+      if(fscanf(fp, "%s %s", entry->ip, entry->name) != 2) {
+	      exit(EXIT_FAILURE);
+      }
 
       /* Get the location. */
 
@@ -503,7 +500,9 @@ readGenDB(const char *dbfile)
       
       /* Get the name */
       
-      fscanf(fp, "%s", entry->name);
+      if(fscanf(fp, "%s", entry->name) != 1) {
+        exit(EXIT_FAILURE);
+      }
 
       /* Strip all whitespace */   
       tmp = ' ';
@@ -576,7 +575,9 @@ readNetDB(const char *dbfile)
       
       /* Get the IP-number.*/
       
-      fscanf(fp, "%s",entry->ip);
+      if(fscanf(fp, "%s",entry->ip) != 1) {
+        exit(EXIT_FAILURE);
+      }
       
       /* Get the location. */
 
