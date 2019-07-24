@@ -19,7 +19,7 @@
 */
 
 #include <stdlib.h>
-#include <gtkgl/gtkglarea.h>
+#include <gtk/gtk.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <math.h>     /* for cos(), sin(), and sqrt() */

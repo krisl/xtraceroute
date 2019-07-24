@@ -1443,16 +1443,8 @@ main(int argc, char **argv)
 
   /* FIXME  Fix this to work with pseudocolor visuals. */
 
-  {
-    int attribs[] = {GDK_GL_RGBA,
-		     GDK_GL_RED_SIZE,1,
-		     GDK_GL_GREEN_SIZE,1,
-		     GDK_GL_BLUE_SIZE,1,
-		     GDK_GL_DEPTH_SIZE,1,
-		     GDK_GL_DOUBLEBUFFER,
-		     GDK_GL_NONE};
-    glarea = gtk_gl_area_new(attribs);
-  }
+  glarea = gtk_gl_area_new();
+
   vbox    = gtk_vbox_new(FALSE,0);
   pane    = gtk_vpaned_new();
 
