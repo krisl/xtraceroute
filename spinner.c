@@ -97,8 +97,8 @@ GtkWidget* spinner_new(void)
   label = gtk_label_new(" ");
   gtk_container_add(GTK_CONTAINER(spin), label);
   /*  
-  gtk_signal_connect(GTK_OBJECT(spin), "clicked",
-		     (GtkSignalFunc)new_trace,
+  g_signal_connect(G_OBJECT(spin), "clicked",
+		     G_CALLBACK(new_trace),
 		     (gpointer)NULL);
   */
   spinner_state = 0;

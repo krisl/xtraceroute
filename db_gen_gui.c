@@ -133,14 +133,14 @@ void addGen(GtkWidget* wi)
   lon_entry  = gtk_entry_new();
   info_entry = gtk_entry_new();
 
-  gtk_signal_connect(GTK_OBJECT(name_entry), "changed",
-		     GTK_SIGNAL_FUNC(text_change_callback), NULL);
-  gtk_signal_connect(GTK_OBJECT(lat_entry),  "changed",
-		     GTK_SIGNAL_FUNC(text_change_callback), NULL);
-  gtk_signal_connect(GTK_OBJECT(lon_entry),  "changed",
-		     GTK_SIGNAL_FUNC(text_change_callback), NULL);
-  gtk_signal_connect(GTK_OBJECT(info_entry), "changed",
-		     GTK_SIGNAL_FUNC(text_change_callback), NULL);
+  g_signal_connect(G_OBJECT(name_entry), "changed",
+		     G_CALLBACK(text_change_callback), NULL);
+  g_signal_connect(G_OBJECT(lat_entry),  "changed",
+		     G_CALLBACK(text_change_callback), NULL);
+  g_signal_connect(G_OBJECT(lon_entry),  "changed",
+		     G_CALLBACK(text_change_callback), NULL);
+  g_signal_connect(G_OBJECT(info_entry), "changed",
+		     G_CALLBACK(text_change_callback), NULL);
 
   add_widget_to_table(GTK_WIDGET(name_entry), GTK_TABLE(table), 0, 1);
   add_widget_to_table(GTK_WIDGET(lat_entry),  GTK_TABLE(table), 1, 1);
@@ -165,10 +165,10 @@ void addGen(GtkWidget* wi)
   yesbutton = gtk_button_new_with_label(_("OK"));
   gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(dialog))), yesbutton,
 		     TRUE, TRUE, 0);
-  gtk_signal_connect(GTK_OBJECT (yesbutton), "clicked",
-		     GTK_SIGNAL_FUNC (yesbutton_callback), dialog);
-  gtk_signal_connect(GTK_OBJECT (yesbutton), "clicked",
-		     GTK_SIGNAL_FUNC (destroy_widget_callback), dialog);
+  g_signal_connect(G_OBJECT (yesbutton), "clicked",
+		     G_CALLBACK (yesbutton_callback), dialog);
+  g_signal_connect(G_OBJECT (yesbutton), "clicked",
+		     G_CALLBACK (destroy_widget_callback), dialog);
   gtk_widget_set_can_default(yesbutton, TRUE);
   gtk_widget_grab_default(yesbutton);
   gtk_widget_show(yesbutton);
@@ -176,15 +176,15 @@ void addGen(GtkWidget* wi)
   nobutton = gtk_button_new_with_label(_("Cancel"));
   gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(dialog))), nobutton,
 		     TRUE, TRUE, 0);
-  gtk_signal_connect(GTK_OBJECT (nobutton), "clicked",
-		      GTK_SIGNAL_FUNC(destroy_widget_callback), dialog);
+  g_signal_connect(G_OBJECT (nobutton), "clicked",
+		      G_CALLBACK(destroy_widget_callback), dialog);
   gtk_widget_show(nobutton);
 
   helpbutton = gtk_button_new_with_label(_("Help"));
   gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(dialog))), helpbutton,
 		     TRUE, TRUE, 0);
-  gtk_signal_connect(GTK_OBJECT (helpbutton), "clicked",
-		      GTK_SIGNAL_FUNC(helpbutton_callback), dialog);
+  g_signal_connect(G_OBJECT (helpbutton), "clicked",
+		      G_CALLBACK(helpbutton_callback), dialog);
   gtk_widget_show(helpbutton);
 
   gtk_widget_show (dialog);

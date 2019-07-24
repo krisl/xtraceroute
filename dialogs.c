@@ -49,8 +49,8 @@ void tell_user(const char *mess)
     
     
     button = gtk_button_new_with_label(_("OK"));
-    gtk_signal_connect(GTK_OBJECT (button), "clicked",
-	    GTK_SIGNAL_FUNC (destroy_widget_callback), dialog);
+    g_signal_connect(G_OBJECT (button), "clicked",
+	    G_CALLBACK (destroy_widget_callback), dialog);
     gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(dialog))), button,
 	    TRUE, TRUE, 0);
     gtk_widget_set_can_default(button, TRUE);
