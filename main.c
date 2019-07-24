@@ -1356,8 +1356,8 @@ main(int argc, char **argv)
 	while (local.extpipe_active != FALSE)
 	  {
 	   // 	printf(".");
-	    get_from_extDNS(&local, local.extpipe[0], 
-			    GDK_INPUT_READ|SYNCH_RESOLV);
+	    get_from_extDNS(g_io_channel_unix_new(local.extpipe[0]), 
+			    G_IO_IN|SYNCH_RESOLV, &local);
 	  }
 	DPRINTF("resolved localhost.\n");
 	

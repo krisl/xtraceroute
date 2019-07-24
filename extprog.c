@@ -41,12 +41,12 @@ extern GtkWidget *clist;    // from main.c
  */
 
 gint 
-get_from_extDNS(site* site, int fd, GdkInputCondition cond)
+get_from_extDNS(GIOChannel *gio, GIOCondition cond, site* site)
 {
   int count;
   char c;
-
-  if(!(cond & GDK_INPUT_READ))
+  int fd = g_io_channel_unix_get_fd (gio);
+  if(!(cond & G_IO_IN))
     {
       DPRINTF("Huh? Not read?\n");
       return FALSE;
@@ -144,7 +144,6 @@ get_from_extDNS(site* site, int fd, GdkInputCondition cond)
 	  strcpy(site->info, "No further info.");
 	  
 escape:
-	  // gdk_input_remove(site->extpipe_tag); 
 	  close(fd);
 	  site->extpipe[0]           = -1;
 	  site->extpipe_tag          = 0;
@@ -224,8 +223,8 @@ void callExternalDNS(site* site)
     default:
       /* We're the parent */
       site->extpipe_active = TRUE;
-      site->extpipe_tag = gdk_input_add(site->extpipe[0], GDK_INPUT_READ,
-					(GdkInputFunction)get_from_extDNS, site);
+      GIOChannel *channel = g_io_channel_unix_new(site->extpipe[0]);
+      site->extpipe_tag = g_io_add_watch(channel, G_IO_IN, (GIOFunc)get_from_extDNS, site);
     }
 }
 
@@ -237,7 +236,7 @@ void callExternalDNS(site* site)
  * Only called from get_from_traceroute() when it gets a whole line.
  */
 
-static void 
+static gint 
 parse_row_from_traceroute(char *input)
 {
   int i;
@@ -262,15 +261,15 @@ parse_row_from_traceroute(char *input)
 	{
 	  char tmp[200];
 	  DPRINTF("unknown host!\n");
-	  gdk_input_remove(traceroute_state.tag);
 	  close(traceroute_state.fd[0]);
 	  traceroute_state.fd[0] = -1;
 	  strcpy(tmp, _("xtraceroute: unknown host "));
 	  strcat(tmp, user_settings->current_target);
 	  tell_user(tmp);
 	  traceroute_state.scanning = 0;
+    return FALSE;
 	}
-      return;
+      return TRUE;
     }
   else if(strlen(input)< 10)
     {
@@ -345,11 +344,11 @@ parse_row_from_traceroute(char *input)
       close(traceroute_state.fd[0]);
       traceroute_state.fd[0]    = -1;
       traceroute_state.scanning = 0;
-      gdk_input_remove(traceroute_state.tag);
       spinner_unref("traceroute");
       makeearth();
+      return FALSE;
     }
-  return;
+  return TRUE;
 }
 
 /**
@@ -363,19 +362,16 @@ parse_row_from_traceroute(char *input)
  */
 
 gint 
-get_from_traceroute(char* nope, int fd, GdkInputCondition cond)
+get_from_traceroute(GIOChannel *gio, GIOCondition cond, gpointer data)
 {
   //    DPRINTF(".");
 
+  int fd = g_io_channel_unix_get_fd (gio);
   if(traceroute_state.scanning == 0)
     {
-      /* FIX for API brokenness. This callback should unregister if it 
-	 returns false, as all other callbacks (in gtk at least) do. */
-      gdk_input_remove(traceroute_state.tag);      
-
       return FALSE;
     }
-  if(cond & GDK_INPUT_READ)
+  if(cond & G_IO_IN)
     {
       int count;
       char c;
@@ -393,7 +389,6 @@ get_from_traceroute(char* nope, int fd, GdkInputCondition cond)
 	  traceroute_state.scanning = 0;
 	  makeearth();
 	  spinner_unref("traceroute");
-	  gdk_input_remove(traceroute_state.tag); /* Fix for bad API. See above. */
 	  return FALSE;
 	}
 
@@ -405,8 +400,8 @@ get_from_traceroute(char* nope, int fd, GdkInputCondition cond)
       if(c == '\n')
 	{
 	  traceroute_state.row_so_far[traceroute_state.buffer_counter] = '\0';
-	  parse_row_from_traceroute(traceroute_state.row_so_far);
 	  traceroute_state.buffer_counter = 0;
+	  return parse_row_from_traceroute(traceroute_state.row_so_far);
 	}
     }
   return TRUE;
@@ -433,8 +428,8 @@ calltrace(void)
       traceroute_state.fd[0] = STDIN_FILENO;
       traceroute_state.scanning = 1;
       spinner_ref("traceroute");
-      traceroute_state.tag = gdk_input_add(traceroute_state.fd[0], GDK_INPUT_READ,
-					   (GdkInputFunction)get_from_traceroute, NULL);
+      GIOChannel *channel = g_io_channel_unix_new(traceroute_state.fd[0]);
+      traceroute_state.tag = g_io_add_watch(channel, G_IO_IN, (GIOFunc)get_from_traceroute, NULL);
       return;
     }
   
@@ -476,7 +471,7 @@ calltrace(void)
       /* We're the parent */
       traceroute_state.scanning = 1;
       spinner_ref("traceroute");
-      traceroute_state.tag = gdk_input_add(traceroute_state.fd[0], GDK_INPUT_READ,
-					   (GdkInputFunction)get_from_traceroute, NULL);
+      GIOChannel *channel = g_io_channel_unix_new(traceroute_state.fd[0]);
+      traceroute_state.tag = g_io_add_watch(channel, G_IO_IN, get_from_traceroute, NULL);
     }
 }

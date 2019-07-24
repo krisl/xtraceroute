@@ -257,7 +257,7 @@ void map_texture(const GdkPixbuf *);
 void set_transparency(gint);               /* s.g. */
 void set_zoom(gint);                       /* s.g. */
 void set_view_motion(gfloat,gfloat);       /* s.g. */
-gint get_from_extDNS(site*, int, GdkInputCondition);
+gint get_from_extDNS(GIOChannel *gio, GIOCondition cond, site* site);
 void callExternalDNS(site*);
 void arrangeUnknownSites(void);
 
