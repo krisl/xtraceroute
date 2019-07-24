@@ -1399,11 +1399,8 @@ main(int argc, char **argv)
   gtk_window_set_default_size ((GtkWindow *)window, 
 			       DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
   
-  gtk_window_set_policy ((GtkWindow *)window,
-			 FALSE,  // allow shrink
-			 TRUE,   // allow_grow
-			 FALSE   // auto_shrink
-			 );
+  // gtk_widget_set_size_request ((GtkWindow *)window, 
+	// 		       DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
   
   combo_hbox  = gtk_hbox_new(FALSE, 0);
   combo_label = gtk_label_new (_("Target: "));
@@ -1514,7 +1511,7 @@ main(int argc, char **argv)
   g_signal_connect (GTK_OBJECT (window), "destroy",
 		      G_CALLBACK(exit_program), NULL);
   
-  gtk_widget_set_usize(GTK_WIDGET(glarea), 
+  gtk_widget_set_size_request(GTK_WIDGET(glarea), 
 		       DEFAULT_WINDOW_WIDTH/4, 
 		       DEFAULT_WINDOW_WIDTH/4);
   
@@ -1558,7 +1555,7 @@ main(int argc, char **argv)
   hbox  = gtk_hbox_new(FALSE, 0);
   vbox2 = gtk_vbox_new(FALSE, 5);
 
-  gtk_container_border_width(GTK_CONTAINER(vbox2), 5);
+  gtk_container_set_border_width(GTK_CONTAINER(vbox2), 5);
 
 
   dummyscrwin = gtk_scrolled_window_new(NULL, NULL);
@@ -1586,7 +1583,7 @@ main(int argc, char **argv)
   /* Traceroute part: */
   label = gtk_label_new (_("Traceroute"));
   gtk_notebook_append_page (GTK_NOTEBOOK (notebook), hbox, label);
-  gtk_widget_set_usize(GTK_WIDGET(notebook), -1, DEFAULT_WINDOW_HEIGHT/4);
+  gtk_widget_set_size_request(GTK_WIDGET(notebook), -1, DEFAULT_WINDOW_HEIGHT/4);
   
   // for all other pages: 
   //
