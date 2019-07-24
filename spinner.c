@@ -114,6 +114,6 @@ GtkWidget* spinner_new(void)
   refcount = 0;
   
   if(tag != 0)
-  g_timeout_remove (tag);
+  gtk_timeout_remove (tag);
   }
 */
