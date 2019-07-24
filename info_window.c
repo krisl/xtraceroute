@@ -135,24 +135,21 @@ static gint yesbutton_callback(GtkWidget *wi, gpointer *data)
 {
   if(text_has_changed)
     {
-      dbentry *ent;
+      dbentry ent;
       const gchar *tmp;
       //  tell_user(_("Info has changed!\n Updating the database is not yet supported!"));
       text_has_changed = FALSE;
       
-      ent = (dbentry *)malloc(sizeof(dbentry));
-      
-      ent->lat = atof(gtk_entry_get_text(GTK_ENTRY(current_site.lat_entry)));
-      ent->lon = atof(gtk_entry_get_text(GTK_ENTRY(current_site.lon_entry)));
-      strcpy(ent->info, gtk_entry_get_text(GTK_ENTRY(current_site.info_entry)));
+      ent.lat = atof(gtk_entry_get_text(GTK_ENTRY(current_site.lat_entry)));
+      ent.lon = atof(gtk_entry_get_text(GTK_ENTRY(current_site.lon_entry)));
+      strcpy(ent.info, gtk_entry_get_text(GTK_ENTRY(current_site.info_entry)));
       
       tmp = gtk_label_get_text(GTK_LABEL(current_site.name_label));
-      strcpy(ent->name, tmp);
+      strcpy(ent.name, tmp);
       tmp = gtk_label_get_text(GTK_LABEL( current_site.ip_label ));
-      strcpy(ent->ip, tmp);
+      strcpy(ent.ip, tmp);
       
-      addToHostDB(local_user_hosts, ent);
-      free(ent);
+      addToHostDB(local_user_hosts, &ent);
     }
   return TRUE;
 }
