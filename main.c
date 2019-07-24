@@ -928,7 +928,7 @@ childhandler(int sig, siginfo_t* sip, void* uap)
  */
 
 static void
-combo_add_to_history(const gchar* name, GtkCombo* combo)
+combo_add_to_history(const gchar* name, GtkWidget* combo)
 {
   static GList *items = NULL;
   char *newloc;
@@ -1021,7 +1021,7 @@ hide_callback(GtkWidget *list,
  */
 
 static gint
-combo_entry_callback(GtkWidget *entry, gpointer *combo)
+combo_entry_callback(GtkWidget *entry, GtkWidget *combo)
 {
     int i;
     
