@@ -1398,8 +1398,8 @@ main(int argc, char **argv)
   combo       = gtk_combo_new ();
   gtk_combo_disable_activate (GTK_COMBO(combo));
   
-  g_signal_connect(GTK_OBJECT (GTK_COMBO(combo)->entry), "activate",
-		     GTK_SIGNAL_FUNC (combo_entry_callback), GTK_COMBO(combo));
+  g_signal_connect(combo, "changed",
+		     G_CALLBACK (combo_entry_callback), combo);
   
   /* OK, this _really_ sucks. What I want from my combo widget:
      
@@ -1500,7 +1500,7 @@ main(int argc, char **argv)
 	// 	     GTK_SIGNAL_FUNC(clist_item_selected), NULL);
  
   g_signal_connect (GTK_OBJECT (window), "destroy",
-		      GTK_SIGNAL_FUNC(exit_program), NULL);
+		      G_CALLBACK(exit_program), NULL);
   
   gtk_widget_set_usize(GTK_WIDGET(glarea), 
 		       DEFAULT_WINDOW_WIDTH/4, 
@@ -1513,22 +1513,22 @@ main(int argc, char **argv)
 			| GDK_BUTTON_RELEASE_MASK);
   
   g_signal_connect(GTK_OBJECT(glarea), "realize",
-		     (GtkSignalFunc)init_gl,
+		     G_CALLBACK(init_gl),
 		     (gpointer)NULL);
   g_signal_connect(GTK_OBJECT(glarea), "expose_event",
-		     (GtkSignalFunc)redraw,
+		     G_CALLBACK(redraw),
 		     (gpointer)NULL);
   g_signal_connect(GTK_OBJECT(glarea), "button_press_event",
-		     (GtkSignalFunc)mouse_button_down,
+		     G_CALLBACK(mouse_button_down),
 		     (gpointer)NULL);
   g_signal_connect(GTK_OBJECT(glarea), "button_release_event",
-		     (GtkSignalFunc)mouse_button_up,
+		     G_CALLBACK(mouse_button_up),
 		     (gpointer)NULL);
   g_signal_connect(GTK_OBJECT(glarea), "motion_notify_event",
-		     (GtkSignalFunc)mouse_motion,
+		     G_CALLBACK(mouse_motion),
 		     (gpointer)NULL);
   g_signal_connect(GTK_OBJECT(glarea), "configure_event",
-		     (GtkSignalFunc)reshape,
+		     G_CALLBACK(reshape),
 		     (gpointer)NULL);
 
   build_menu(window,&menubar);
@@ -1540,7 +1540,7 @@ main(int argc, char **argv)
   spinner = spinner_new();
   info_button = gtk_button_new_with_label(_("Info"));
   g_signal_connect(GTK_OBJECT(info_button), "clicked",
-		     (GtkSignalFunc)info_button_callback,
+		     G_CALLBACK(info_button_callback),
 		     (gpointer)NULL);
   
   hbox  = gtk_hbox_new(FALSE, 0);
