@@ -144,7 +144,7 @@ get_from_extDNS(site* site, int fd, GdkInputCondition cond)
 	  strcpy(site->info, "No further info.");
 	  
 escape:
-	  gdk_input_remove(site->extpipe_tag); 
+	  // gdk_input_remove(site->extpipe_tag); 
 	  close(fd);
 	  site->extpipe[0]           = -1;
 	  site->extpipe_tag          = 0;

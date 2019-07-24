@@ -1043,14 +1043,13 @@ combo_entry_callback(GtkWidget *entry, gpointer *combo)
       }
     */
 
-    combo_add_to_history(gtk_entry_get_text(GTK_ENTRY(entry)), 
-			 GTK_COMBO(combo));
+    combo_add_to_history(gtk_entry_get_text(GTK_ENTRY(entry)), combo);
     strcpy(user_settings->current_target, gtk_entry_get_text(GTK_ENTRY(entry)));
     
 
     if(traceroute_state.fd[0] != -1)
       {
-	gdk_input_remove(traceroute_state.tag); // Should this be here? Think so.
+	// gdk_input_remove(traceroute_state.tag); // Should this be here? Think so.
 	close(traceroute_state.fd[0]);
 	traceroute_state.fd[0] = -1;
       }
@@ -1063,7 +1062,7 @@ combo_entry_callback(GtkWidget *entry, gpointer *combo)
 	/* Kill all possible extprograms still running. */
 	if(sites[i].extpipe_tag != 0)
 	  {
-	    gdk_input_remove(sites[i].extpipe_tag);
+	    // gdk_input_remove(sites[i].extpipe_tag);
 	    sites[i].extpipe_tag = 0;
 	    if(sites[i].extpipe[0] != -1)
 	      {
