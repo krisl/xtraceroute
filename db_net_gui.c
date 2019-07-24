@@ -191,8 +191,7 @@ void addNet(GtkWidget* wi)
   
   
   yesbutton = gtk_button_new_with_label(_("OK"));
-  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(dialog))), yesbutton,
-		     TRUE, TRUE, 0);
+  gtk_dialog_add_action_widget(GTK_DIALOG(dialog), yesbutton, 0);
   g_signal_connect(G_OBJECT (yesbutton), "clicked",
 		     G_CALLBACK (yesbutton_callback), dialog);
   g_signal_connect(G_OBJECT (yesbutton), "clicked",
@@ -202,15 +201,13 @@ void addNet(GtkWidget* wi)
   gtk_widget_show(yesbutton);
 
   nobutton = gtk_button_new_with_label(_("Cancel"));
-  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(dialog))), nobutton,
-		     TRUE, TRUE, 0);
+  gtk_dialog_add_action_widget(GTK_DIALOG(dialog), nobutton, 0);
   g_signal_connect(G_OBJECT (nobutton), "clicked",
 		      G_CALLBACK(destroy_widget_callback), dialog);
   gtk_widget_show(nobutton);
 
   helpbutton = gtk_button_new_with_label(_("Help"));
-  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(dialog))), helpbutton,
-		     TRUE, TRUE, 0);
+  gtk_dialog_add_action_widget(GTK_DIALOG(dialog), helpbutton, 0);
   g_signal_connect(G_OBJECT (helpbutton), "clicked",
 		      G_CALLBACK(helpbutton_callback), dialog);
   gtk_widget_show(helpbutton);
