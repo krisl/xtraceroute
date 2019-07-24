@@ -34,19 +34,19 @@ gint spinner_spin(gpointer data)
   switch(spinner_state)
     {
     case 0:
-      gtk_label_set(GTK_LABEL(label)," O ");
+      gtk_label_set_text(GTK_LABEL(label)," O ");
       spinner_state++;
       break;
     case 1:
-      gtk_label_set(GTK_LABEL(label),"O  ");
+      gtk_label_set_text(GTK_LABEL(label),"O  ");
       spinner_state++;
       break;
     case 2:
-      gtk_label_set(GTK_LABEL(label)," O ");
+      gtk_label_set_text(GTK_LABEL(label)," O ");
       spinner_state++;
       break;
     case 3:
-      gtk_label_set(GTK_LABEL(label),"  O");
+      gtk_label_set_text(GTK_LABEL(label),"  O");
       spinner_state = 0;
       break;
     }
