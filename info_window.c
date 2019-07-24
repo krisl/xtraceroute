@@ -81,19 +81,19 @@ void infowin_change_site(int site)
   current_site.nr = site;
 
   sprintf(string, _("Database record for host nr %d"), current_site.nr);
-  gtk_label_set(GTK_LABEL(current_site.title), string);
+  gtk_label_set_text(GTK_LABEL(current_site.title), string);
 
-  gtk_label_set(GTK_LABEL(current_site.name_label), sites[site].name);
+  gtk_label_set_text(GTK_LABEL(current_site.name_label), sites[site].name);
 
-  gtk_label_set(GTK_LABEL(current_site.ip_label), sites[site].ip);
+  gtk_label_set_text(GTK_LABEL(current_site.ip_label), sites[site].ip);
 
   sprintf(string, _("%d ms"), sites[site].time);
-  gtk_label_set(GTK_LABEL(current_site.time_label), string);
+  gtk_label_set_text(GTK_LABEL(current_site.time_label), string);
 
   sprintf(string, _("%lu km"), distance(site)/1000);
-  gtk_label_set(GTK_LABEL(current_site.dist_label), string);
+  gtk_label_set_text(GTK_LABEL(current_site.dist_label), string);
 
-  gtk_label_set(GTK_LABEL(current_site.acc_label), _(accs[sites[site].accuracy]));
+  gtk_label_set_text(GTK_LABEL(current_site.acc_label), _(accs[sites[site].accuracy]));
 
   sprintf(string, "%f",sites[site].lat);
   gtk_entry_set_text(GTK_ENTRY(current_site.lat_entry), string);
