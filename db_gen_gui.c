@@ -117,10 +117,10 @@ void addGen(GtkWidget* wi)
   gtk_widget_show(GTK_WIDGET(title));
   
   gtk_window_set_title (GTK_WINDOW(dialog),_("Record info"));
-  gtk_container_border_width(GTK_CONTAINER(dialog), 10);
+  gtk_container_set_border_width(GTK_CONTAINER(dialog), 10);
     
   table  = gtk_table_new(4,2,FALSE);
-  gtk_container_border_width(GTK_CONTAINER(table), 10);
+  gtk_container_set_border_width(GTK_CONTAINER(table), 10);
   
   
   add_string_to_table(_("Match string:"), GTK_TABLE(table), 0, 0);
@@ -152,7 +152,7 @@ void addGen(GtkWidget* wi)
   /* Pack everything */
 
   frame = gtk_frame_new (_("String matching"));
-  gtk_container_border_width (GTK_CONTAINER (frame), 10);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
   gtk_container_add(GTK_CONTAINER(frame), table);
   gtk_widget_show(GTK_WIDGET(frame));
 

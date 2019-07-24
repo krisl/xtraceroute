@@ -40,7 +40,7 @@ void tell_user(const char *mess)
     GtkWidget *label;
     
     dialog = gtk_dialog_new();
-    gtk_container_border_width(GTK_CONTAINER(dialog), 10);
+    gtk_container_set_border_width(GTK_CONTAINER(dialog), 10);
     
     label  = gtk_label_new(mess);
     gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), label, TRUE,
