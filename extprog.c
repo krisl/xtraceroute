@@ -242,7 +242,6 @@ parse_row_from_traceroute(char *input)
 {
   int i;
   int no;
-  int last;
   char *clistrow[3];
 
   //  DPRINTF("O");
@@ -315,7 +314,15 @@ parse_row_from_traceroute(char *input)
   sprintf(clistrow[2],"%s",sites[no].ip);
   
   /* Add an entry to the list */
-  last = gtk_clist_append(GTK_CLIST(clist), clistrow);
+  GtkTreeModel *model = gtk_tree_view_get_model (GTK_TREE_VIEW(clist));
+  GtkTreeIter  iter;
+  GtkListStore *store = GTK_LIST_STORE(model);
+  gtk_list_store_append (store, &iter);
+  gtk_list_store_set (store, &iter,
+                      COL_NR, clistrow[0],
+                      COL_HOSTNAME, clistrow[1],
+                      COL_IP, clistrow[2],
+                      -1);
   
   /* Free the clistrow here */
   free(clistrow[0]);
@@ -327,7 +334,7 @@ parse_row_from_traceroute(char *input)
      nothing... (This comment kept in case it shows up again.) */
   
   /* Scroll the clist so the new entry is visible */
-  gtk_clist_moveto(GTK_CLIST(clist), last, 1, 1.0, 0.5);
+  //gtk_clist_moveto(GTK_CLIST(clist), last, 1, 1.0, 0.5);
   
   if(no >= MAX_SITES-1)
     {

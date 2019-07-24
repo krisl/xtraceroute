@@ -1108,7 +1108,6 @@ main(int argc, char **argv)
     N_("IP number")
   };
 
-  enum { COL_NR, COL_HOSTNAME, COL_IP, NUM_COLS };
   static int translated;
 
 #ifdef ENABLE_NLS
@@ -1359,7 +1358,7 @@ main(int argc, char **argv)
         translated = 1;
   }
 
-  //GtkListStore *store = gtk_list_store_new(NUM_COLS, G_TYPE_STRING, G_TYYPE_STRING, G_TYPE_STRING);
+  GtkListStore *store = gtk_list_store_new(NUM_COLS, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
   clist = gtk_tree_view_new();
   gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW (clist),
                                               -1,      
@@ -1379,6 +1378,8 @@ main(int argc, char **argv)
                                              gtk_cell_renderer_text_new(),
                                              "text", COL_IP,
                                              NULL);
+
+  gtk_tree_view_set_model (GTK_TREE_VIEW (clist), GTK_TREE_MODEL(store));
 
 	GtkTreeSelection * selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (clist));
 	gtk_tree_selection_set_mode(selection, GTK_SELECTION_BROWSE);

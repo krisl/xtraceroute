@@ -125,6 +125,8 @@ typedef enum
   ACC_RFC_1712, ACC_RFC_1876, ACC_LOCAL_SITE, ACC_LOCAL_USER    
 } accuracy_t;
 
+enum { COL_NR, COL_HOSTNAME, COL_IP, NUM_COLS };
+
 typedef struct
 {
   short draw;           /** Plot this site if draw. */
