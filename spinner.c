@@ -63,7 +63,7 @@ void spinner_ref(const char* reason)
   refcount++;
 
   if(tag == 0)
-    tag = gtk_timeout_add (100, spinner_spin, NULL);
+    tag = g_timeout_add (100, spinner_spin, NULL);
 }
 
 /**
@@ -87,7 +87,7 @@ void spinner_unref(const char* reason)
 
   if(tag != 0)
     {
-      gtk_timeout_remove(tag);
+      g_timeout_remove(tag);
     }
   tag = 0;
   spinner_state = 0;
@@ -120,6 +120,6 @@ GtkWidget* spinner_new(void)
   refcount = 0;
   
   if(tag != 0)
-  gtk_timeout_remove (tag);
+  g_timeout_remove (tag);
   }
 */
