@@ -1398,7 +1398,7 @@ main(int argc, char **argv)
   combo       = gtk_combo_new ();
   gtk_combo_disable_activate (GTK_COMBO(combo));
   
-  gtk_signal_connect(GTK_OBJECT (GTK_COMBO(combo)->entry), "activate",
+  g_signal_connect(GTK_OBJECT (GTK_COMBO(combo)->entry), "activate",
 		     GTK_SIGNAL_FUNC (combo_entry_callback), GTK_COMBO(combo));
   
   /* OK, this _really_ sucks. What I want from my combo widget:
@@ -1412,19 +1412,19 @@ main(int argc, char **argv)
         the entry part, which means it gets called if you move among the
         entries in the list w/ arrow keys.
 
-   gtk_signal_connect(GTK_OBJECT (GTK_COMBO(combo)->entry), "changed",
+   g_signal_connect(GTK_OBJECT (GTK_COMBO(combo)->entry), "changed",
 		      GTK_SIGNAL_FUNC (change_callback), GTK_COMBO(combo));
 		      
 	This is a trick to get to know when the dropdown list closes. 
         Unfortunatly I can't tell if you chose an item, or just "closed 
         the list". Useless.
 
-   gtk_signal_connect(GTK_OBJECT (GTK_COMBO(combo)->popwin), "hide",
+   g_signal_connect(GTK_OBJECT (GTK_COMBO(combo)->popwin), "hide",
                       GTK_SIGNAL_FUNC (hide_callback), GTK_COMBO(combo));
 
         This gets called when a list entry gets selected. (clicked) Or 
         when you move around in the list with the arrow keys. Sigh.   
-   gtk_signal_connect(GTK_OBJECT (GTK_COMBO(combo)->list), "select-child",
+   g_signal_connect(GTK_OBJECT (GTK_COMBO(combo)->list), "select-child",
 		      GTK_SIGNAL_FUNC(combo_list_callback), GTK_COMBO(combo));
   */
 
@@ -1496,8 +1496,10 @@ main(int argc, char **argv)
   
   gtk_signal_connect(GTK_OBJECT(clist), "row-activated",
 	 	     GTK_SIGNAL_FUNC(onRowActivated), NULL);
+  // g_signal_connect(GTK_OBJECT(clist), "select_row",
+	// 	     GTK_SIGNAL_FUNC(clist_item_selected), NULL);
  
-  gtk_signal_connect (GTK_OBJECT (window), "destroy",
+  g_signal_connect (GTK_OBJECT (window), "destroy",
 		      GTK_SIGNAL_FUNC(exit_program), NULL);
   
   gtk_widget_set_usize(GTK_WIDGET(glarea), 
@@ -1510,22 +1512,22 @@ main(int argc, char **argv)
 			| GDK_BUTTON_PRESS_MASK
 			| GDK_BUTTON_RELEASE_MASK);
   
-  gtk_signal_connect(GTK_OBJECT(glarea), "realize",
+  g_signal_connect(GTK_OBJECT(glarea), "realize",
 		     (GtkSignalFunc)init_gl,
 		     (gpointer)NULL);
-  gtk_signal_connect(GTK_OBJECT(glarea), "expose_event",
+  g_signal_connect(GTK_OBJECT(glarea), "expose_event",
 		     (GtkSignalFunc)redraw,
 		     (gpointer)NULL);
-  gtk_signal_connect(GTK_OBJECT(glarea), "button_press_event",
+  g_signal_connect(GTK_OBJECT(glarea), "button_press_event",
 		     (GtkSignalFunc)mouse_button_down,
 		     (gpointer)NULL);
-  gtk_signal_connect(GTK_OBJECT(glarea), "button_release_event",
+  g_signal_connect(GTK_OBJECT(glarea), "button_release_event",
 		     (GtkSignalFunc)mouse_button_up,
 		     (gpointer)NULL);
-  gtk_signal_connect(GTK_OBJECT(glarea), "motion_notify_event",
+  g_signal_connect(GTK_OBJECT(glarea), "motion_notify_event",
 		     (GtkSignalFunc)mouse_motion,
 		     (gpointer)NULL);
-  gtk_signal_connect(GTK_OBJECT(glarea), "configure_event",
+  g_signal_connect(GTK_OBJECT(glarea), "configure_event",
 		     (GtkSignalFunc)reshape,
 		     (gpointer)NULL);
 
@@ -1537,7 +1539,7 @@ main(int argc, char **argv)
   
   spinner = spinner_new();
   info_button = gtk_button_new_with_label(_("Info"));
-  gtk_signal_connect(GTK_OBJECT(info_button), "clicked",
+  g_signal_connect(GTK_OBJECT(info_button), "clicked",
 		     (GtkSignalFunc)info_button_callback,
 		     (gpointer)NULL);
   
