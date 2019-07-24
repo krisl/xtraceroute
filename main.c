@@ -986,9 +986,9 @@ combo_list_callback(GtkWidget *list,
 		    GtkWidget *member, 
 		    gpointer  *combo)
 {
-  char* data;
+  const gchar* data;
 
-  gtk_label_get(GTK_LABEL(GTK_BIN(member)->child), &data);
+  data = gtk_label_get_text(GTK_LABEL(GTK_BIN(member)->child));
 
   DPRINTF("combo_list_callback called. member: %s\n", data);
   
