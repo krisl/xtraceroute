@@ -573,6 +573,8 @@ void onRowActivated (GtkTreeView        *treeview,
      gtk_tree_model_get(model, &iter, COL_HOSTNAME, &hostname, -1);
 
      g_print ("Double-clicked row contains hostname %s\n", hostname);
+     int *i = gtk_tree_path_get_indices ( path );
+     info_window(i[0]);
 
      g_free(hostname);
   }
