@@ -114,8 +114,16 @@ static gint prevbutton_callback (GtkWidget *wi, gpointer *data)
   if (current_site.nr > 0)
     {
       printf("prev\n");
-      // gtk_clist_select_row (GTK_CLIST(clist), current_site.nr - 1, 1);
+      GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(clist));
+      GtkTreeModel *model;
+      GtkTreeIter iter;
+
+      gtk_tree_selection_get_selected(selection, &model, &iter);
+      GtkTreePath *path = gtk_tree_model_get_path (model, &iter);
+      gtk_tree_path_prev(path);
+      gtk_tree_selection_select_path(selection, path);
       // gtk_clist_moveto (GTK_CLIST(clist), current_site.nr - 1, 1, 0.5, 0.5);
+      gtk_tree_path_free(path);
     }
   return TRUE;
 }
@@ -125,7 +133,14 @@ static gint nextbutton_callback (GtkWidget *wi, gpointer *data)
   if (sites[current_site.nr+1].draw)
     {
       printf("next\n");
-      // gtk_clist_select_row (GTK_CLIST(clist), current_site.nr + 1, 1);
+      GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(clist));
+      GtkTreeModel *model;
+      GtkTreeIter iter;
+
+      gtk_tree_selection_get_selected(selection, &model, &iter);
+      if (gtk_tree_model_iter_next(model, &iter))
+          gtk_tree_selection_select_iter(selection, &iter);
+
       // gtk_clist_moveto (GTK_CLIST(clist), current_site.nr + 1, 1, 0.5, 0.5);
     }
   return TRUE;
