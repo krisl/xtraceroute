@@ -27,6 +27,11 @@ static gint refcount = 0;
 
 gint spinner_spin(gpointer data)
 {
+  if (refcount < 1) {
+    gtk_label_set(GTK_LABEL(label)," ");
+    return TRUE; // let the timer keep running
+  }
+
   switch(spinner_state)
     {
     case 0:
@@ -85,14 +90,8 @@ void spinner_unref(const char* reason)
   if(refcount < 0)
     printf("Aigh! spinner refcount negative! (%d)\n", refcount);
 
-  if(tag != 0)
-    {
-      g_timeout_remove(tag);
-    }
   tag = 0;
   spinner_state = 0;
-  if(label)
-    gtk_label_set(GTK_LABEL(label)," ");
 }
 
 
