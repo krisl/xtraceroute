@@ -534,16 +534,11 @@ about_program(GtkWidget *wi, gpointer *data)
 /*-------------------------------------------------------------------------*/
 /* clist_item_selected()                                                   */
 /*-------------------------------------------------------------------------*/
-
 static gint 
-clist_item_selected(GtkCList *parentlist, gint row, gint column,
+clist_item_selected(GtkTreeSelection *treeselection, gpointer user_data,
 		    GdkEventButton *event)
-{
-  if (event && event->type == GDK_2BUTTON_PRESS)
-    {
-      info_window(row); /* Double click detected */
-    }
-  else
+{ 
+  gint row;
     {
       int i;
 
@@ -561,6 +556,26 @@ clist_item_selected(GtkCList *parentlist, gint row, gint column,
         }
     }
   return TRUE;
+}
+
+void onRowActivated (GtkTreeView        *treeview,
+                     GtkTreePath        *path,
+                     GtkTreeViewColumn  *col,
+                     gpointer           userdata) {
+  g_print ("A row has been double-clicked!\n");
+
+  GtkTreeModel *model = gtk_tree_view_get_model(treeview);
+
+  GtkTreeIter   iter;
+  if (gtk_tree_model_get_iter(model, &iter, path))
+  {
+     gchar *hostname;
+     gtk_tree_model_get(model, &iter, COL_HOSTNAME, &hostname, -1);
+
+     g_print ("Double-clicked row contains hostname %s\n", hostname);
+
+     g_free(hostname);
+  }
 }
 
 /**
@@ -1390,8 +1405,8 @@ main(int argc, char **argv)
   // gtk_clist_set_column_width (GTK_CLIST(clist), 1, 230);
   // gtk_clist_set_column_width (GTK_CLIST(clist), 2, 100);
   
-  // gtk_signal_connect(GTK_OBJECT(clist), "select_row",
-	// 	     GTK_SIGNAL_FUNC(clist_item_selected), NULL);
+  gtk_signal_connect(GTK_OBJECT(clist), "row-activated",
+	 	     GTK_SIGNAL_FUNC(onRowActivated), NULL);
  
   gtk_signal_connect (GTK_OBJECT (window), "destroy",
 		      GTK_SIGNAL_FUNC(exit_program), NULL);
