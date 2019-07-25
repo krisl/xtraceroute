@@ -534,11 +534,8 @@ about_program(GtkWidget *wi, gpointer *data)
 /*-------------------------------------------------------------------------*/
 /* clist_item_selected()                                                   */
 /*-------------------------------------------------------------------------*/
-static gint 
-clist_item_selected(GtkTreeSelection *treeselection, gpointer user_data,
-		    GdkEventButton *event)
-{ 
-  gint row;
+void set_selected_site(gint row)
+{
     {
       int i;
 
@@ -555,7 +552,37 @@ clist_item_selected(GtkTreeSelection *treeselection, gpointer user_data,
           makeearth();
         }
     }
-  return TRUE;
+}
+
+gboolean
+view_selection_func (GtkTreeSelection *selection,
+                     GtkTreeModel     *model,
+                     GtkTreePath      *path,
+                     gboolean          path_currently_selected,
+                     gpointer          userdata)
+{
+  GtkTreeIter iter;
+
+  if (gtk_tree_model_get_iter(model, &iter, path))
+  {
+    gchar *hostname;
+    gtk_tree_model_get(model, &iter, COL_HOSTNAME, &hostname, -1);
+
+    if (!path_currently_selected)
+    {
+      int *i = gtk_tree_path_get_indices ( path );
+      g_print ("%d %s is going to be selected.\n", i[0], hostname);
+      set_selected_site(i[0]);
+    }
+    else
+    {
+      g_print ("%s is going to be unselected.\n", hostname);
+    }
+
+    g_free(hostname);
+  }
+
+  return TRUE; /* allow selection state to change */
 }
 
 void onRowActivated (GtkTreeView        *treeview,
@@ -579,6 +606,30 @@ void onRowActivated (GtkTreeView        *treeview,
      g_free(hostname);
   }
 }
+
+// void show_selected (GtkTreeView *treeview) {
+//   GtkTreeSelection *selection;
+//   GtkTreeModel     *model;
+//   GtkTreeIter       iter;
+// 
+//   /* This will only work in single or browse selection mode! */
+// 
+//   selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
+//   if (gtk_tree_selection_get_selected(selection, &model, &iter))
+//   {
+//     gchar *hostname;
+// 
+//     gtk_tree_model_get (model, &iter, COL_HOSTNAME, &hostname, -1);
+// 
+//     g_print ("selected row is: %s\n", hostname);
+// 
+//     g_free(hostname);
+//   }
+//   else
+//   {
+//     g_print ("no row selected.\n");
+//   }
+// }
 
 /**
  * info_button_callback()
@@ -1399,7 +1450,8 @@ main(int argc, char **argv)
   gtk_tree_view_set_model (GTK_TREE_VIEW (clist), GTK_TREE_MODEL(store));
 
 	GtkTreeSelection * selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (clist));
-	gtk_tree_selection_set_mode(selection, GTK_SELECTION_BROWSE);
+	gtk_tree_selection_set_mode(selection, GTK_SELECTION_BROWSE); // exactly one item is always selected
+  gtk_tree_selection_set_select_function(selection, view_selection_func, NULL, NULL);
   
   /* FIXME: These should probably be font-dependent. */
   
