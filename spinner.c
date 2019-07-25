@@ -20,7 +20,6 @@
 
 #include "xt.h"
 
-static gint tag = 0;
 static gint spinner_state;
 static GtkWidget *label;
 static gint refcount = 0;
@@ -67,8 +66,6 @@ void spinner_ref(const char* reason)
 
   refcount++;
 
-  if(tag == 0)
-    tag = g_timeout_add (100, spinner_spin, NULL);
 }
 
 /**
@@ -89,9 +86,6 @@ void spinner_unref(const char* reason)
 
   if(refcount < 0)
     printf("Aigh! spinner refcount negative! (%d)\n", refcount);
-
-  tag = 0;
-  spinner_state = 0;
 }
 
 
@@ -110,6 +104,7 @@ GtkWidget* spinner_new(void)
   spinner_state = 0;
   gtk_widget_show(label);
 
+  g_timeout_add (200, spinner_spin, NULL);
   return spin;
 }
 
