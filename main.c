@@ -928,9 +928,30 @@ childhandler(int sig, siginfo_t* sip, void* uap)
  */
 
 static void
-combo_add_to_history(char* name, GtkComboBox* combo)
+combo_add_to_history(const gchar* name, GtkCombo* combo)
 {
-  gtk_combo_box_text_prepend_text (GTK_COMBO_BOX_TEXT (combo), name);
+  static GList *items = NULL;
+  char *newloc;
+
+  if(!(newloc = (char*)malloc(100)))
+    {
+      printf("unable to allocate memory for newloc in history!\n");
+      exit_program(NULL, NULL);
+    }
+
+  strncpy(newloc, name, 100);
+  
+  items = g_list_prepend(items, newloc);
+
+  if(g_list_length(items) > 10)
+    {
+      char* item_to_remove = g_list_nth_data(items, 10);
+      
+      items = g_list_remove(items, item_to_remove);
+      free(item_to_remove);
+    }
+  
+  gtk_combo_set_popdown_strings (GTK_COMBO(combo), items);
 }
 
 #if 0
@@ -1373,12 +1394,12 @@ main(int argc, char **argv)
   
   combo_hbox  = gtk_hbox_new(FALSE, 0);
   combo_label = gtk_label_new (_("Target: "));
-  combo       = gtk_combo_box_text_new ();
-  // gtk_combo_disable_activate (GTK_COMBO(combo));
+  combo       = gtk_combo_new ();
+  gtk_combo_disable_activate (GTK_COMBO(combo));
   
-  g_signal_connect(combo, "changed",
-		     G_CALLBACK (combo_entry_callback), combo);
-  
+  g_signal_connect(GTK_OBJECT (GTK_COMBO(combo)->entry), "activate",
+                    G_CALLBACK (combo_entry_callback), GTK_COMBO(combo));
+
   /* OK, this _really_ sucks. What I want from my combo widget:
      
      A) When you type something into it and press enter, I get to know 
@@ -1410,7 +1431,7 @@ main(int argc, char **argv)
     {
       /* If we got a site to trace from the command line, add it to 
 	 the history. */
-      combo_add_to_history(user_settings->current_target, combo);
+      combo_add_to_history(user_settings->current_target, GTK_COMBO(combo));
     }
 
   gtk_box_pack_start(GTK_BOX(combo_hbox), combo_label, FALSE, FALSE, 0);
