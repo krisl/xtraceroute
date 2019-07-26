@@ -669,7 +669,7 @@ void makeearth(void)
              geosync satellites are), and back. Seems reasonable. */
 
     int latency = sites[i].time - sites[i-1].time;
-	  if(latency < 260) 
+	  if(latency < 260 || latency > 10000) 
 	    {
 	      plot_line(sites[i-1].lat, sites[i-1].lon,
 			sites[ i ].lat, sites[ i ].lon);
