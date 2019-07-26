@@ -668,7 +668,8 @@ void makeearth(void)
              it takes light to travel from the ground to 36000 km (where
              geosync satellites are), and back. Seems reasonable. */
 
-	  if(sites[i].time - sites[i-1].time < 260) 
+    int latency = sites[i].time - sites[i-1].time;
+	  if(latency < 260) 
 	    {
 	      plot_line(sites[i-1].lat, sites[i-1].lon,
 			sites[ i ].lat, sites[ i ].lon);
