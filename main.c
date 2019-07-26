@@ -1383,10 +1383,11 @@ main(int argc, char **argv)
   
   combo_hbox  = gtk_hbox_new(FALSE, 0);
   combo_label = gtk_label_new (_("Target: "));
-  combo       = gtk_combo_box_text_new ();
+  combo       = gtk_combo_box_text_new_with_entry ();
   // gtk_combo_disable_activate (GTK_COMBO(combo));
   
-  g_signal_connect(combo, "changed",
+  // https://developer.gimp.org/api/2.0/gtk/GtkComboBoxEntry.html
+  g_signal_connect(gtk_bin_get_child (combo), "activate",
 		     G_CALLBACK (combo_entry_callback), combo);
   
   /* OK, this _really_ sucks. What I want from my combo widget:
